@@ -13,7 +13,7 @@ public class CharacterController2D : MonoBehaviour
 	[SerializeField] private Collider2D m_CrouchDisableCollider;                // A collider that will be disabled when crouching
 
 	const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
-	private bool m_Grounded;            // Whether or not the player is grounded.
+	public bool m_Grounded;            // Whether or not the player is grounded.
 	const float k_CeilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
 	private Rigidbody2D m_Rigidbody2D;
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
@@ -29,6 +29,8 @@ public class CharacterController2D : MonoBehaviour
 
 	public BoolEvent OnCrouchEvent;
 	private bool m_wasCrouching = false;
+
+	private bool dash = true;
 
 	private void Awake()
 	{
@@ -55,10 +57,16 @@ public class CharacterController2D : MonoBehaviour
 			{
 				m_Grounded = true;
 				if (!wasGrounded)
+					dash = true;
 					OnLandEvent.Invoke();
 			}
 		}
 	}
+
+	public bool isGrounded()
+    {
+		return m_Grounded;
+    }
 
 
 	public void Move(float move, bool crouch, bool jump)
@@ -133,6 +141,25 @@ public class CharacterController2D : MonoBehaviour
 		}
 	}
 
+	public void Dash()
+    {
+		float xF;
+		float yF;
+
+		if(dash)
+        {
+			SoundManager.S.PlayDashSound();
+			xF = Input.GetAxisRaw("Horizontal");
+			yF = Input.GetAxisRaw("Vertical");
+			dash = m_Grounded && yF == -1;
+			m_Rigidbody2D.constraints = RigidbodyConstraints2D.FreezeAll;
+			if (xF == 0f && yF == 0f) xF = m_FacingRight ? 1.0f : -1.0f;
+			m_Rigidbody2D.velocity = Vector3.zero;
+			m_Rigidbody2D.AddForce(new Vector2(xF * 2400f, yF * 500f + 400f));
+			m_Rigidbody2D.constraints = RigidbodyConstraints2D.None;
+			m_Rigidbody2D.freezeRotation = true;
+		}
+	}
 
 	private void Flip()
 	{

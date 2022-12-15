@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - TurnAround
+  - MoveCamera
+  - Enemy
+  - Tile
   layers:
   - Default
   - TransparentFX

@@ -9,6 +9,10 @@ public class SoundManager : MonoBehaviour
 
     public AudioSource bgm;
 
+    public AudioClip playerDeath;
+    public AudioClip enemyDeath;
+    public AudioClip dashSound;
+
     private void Awake()
     {
         S = this;
@@ -25,6 +29,27 @@ public class SoundManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void PlayDeathSound()
+    {
+        audio.PlayOneShot(playerDeath);
+    }
+
+    public void PlayEnemyDeath()
+    {
+        audio.PlayOneShot(enemyDeath);
+    }
+
+    public void PlayDashSound()
+    {
+        audio.PlayOneShot(dashSound);
+    }
+
+
+    public void PlayBGM()
+    {
+        bgm.Play();
     }
 
     public void StopAllSounds()

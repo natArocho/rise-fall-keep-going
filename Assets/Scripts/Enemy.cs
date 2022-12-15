@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
     public float speed;
 
     public bool faceLeft = true;
+    private bool dead;
 
     private CharacterController2D controller;
 
@@ -21,9 +22,21 @@ public class Enemy : MonoBehaviour
     {
         float horizontalMove = speed * Time.fixedDeltaTime;
 
+
         if(faceLeft) { horizontalMove *= -1.0f; }
 
         controller.Move(horizontalMove, false, false);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            if (!dead) 
+            {
+                collision.gameObject.GetComponent<PlayerMovement>().PlayerDeath();
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -33,7 +46,15 @@ public class Enemy : MonoBehaviour
             faceLeft = !faceLeft;
         } else if (collision.gameObject.tag == "Player")
         {
-            Destroy(this.gameObject);
+            StartCoroutine(WaitToDie());
         }
+    }
+
+    public IEnumerator WaitToDie()
+    {
+        dead = true;
+        SoundManager.S.PlayEnemyDeath();
+        yield return new WaitForSeconds(0.1f);
+        Destroy(this.gameObject);
     }
 }
