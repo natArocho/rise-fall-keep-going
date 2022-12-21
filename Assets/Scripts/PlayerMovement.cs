@@ -34,6 +34,12 @@ public class PlayerMovement : MonoBehaviour
 
         if (!(speed > minSpeed)) speed = minSpeed;
 
+        if (!controller.isGrounded() && rb.velocity.y < 0)
+        {
+            controller.AirControl();
+        }
+        else rb.gravityScale = 5;
+
         if (Input.GetButtonDown("Jump"))
         {
             jump = true;

@@ -141,6 +141,7 @@ public class CharacterController2D : MonoBehaviour
 		}
 	}
 
+	//8-way directional dash, dash can be used once midair, refreshes when you hit the ground
 	public void Dash()
     {
 		float xF;
@@ -155,10 +156,27 @@ public class CharacterController2D : MonoBehaviour
 			m_Rigidbody2D.constraints = RigidbodyConstraints2D.FreezeAll;
 			if (xF == 0f && yF == 0f) xF = m_FacingRight ? 1.0f : -1.0f;
 			m_Rigidbody2D.velocity = Vector3.zero;
-			m_Rigidbody2D.AddForce(new Vector2(xF * 2400f, yF * 500f + 400f));
+			if (yF == -1 && xF == 0f) m_Rigidbody2D.AddForce(new Vector2(0, -400f));
+			else m_Rigidbody2D.AddForce(new Vector2(xF * 2400f, yF * 500f + 400f));
 			m_Rigidbody2D.constraints = RigidbodyConstraints2D.None;
 			m_Rigidbody2D.freezeRotation = true;
 		}
+	}
+
+	//Allows for slow/fast falling 
+	public void AirControl()
+    {
+		float yF = Input.GetAxisRaw("Vertical");
+		if (yF == 1)
+        {
+			m_Rigidbody2D.gravityScale = 3;
+        } else if (yF == -1)
+        {
+			m_Rigidbody2D.gravityScale = 7;
+		} else
+        {
+			m_Rigidbody2D.gravityScale = 5;
+        }
 	}
 
 	private void Flip()
