@@ -12,6 +12,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip playerDeath;
     public AudioClip enemyDeath;
     public AudioClip dashSound;
+    public AudioClip coinSound;
 
     private void Awake()
     {
@@ -44,6 +45,11 @@ public class SoundManager : MonoBehaviour
     public void PlayDashSound()
     {
         audio.PlayOneShot(dashSound);
+    }
+
+    public void PlayCoinSound()
+    {
+       audio.PlayOneShot(coinSound);
     }
 
 
