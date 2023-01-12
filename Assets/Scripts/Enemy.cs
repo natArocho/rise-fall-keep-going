@@ -54,7 +54,10 @@ public class Enemy : MonoBehaviour
     {
         dead = true;
         SoundManager.S.PlayEnemyDeath();
-        yield return new WaitForSeconds(0.1f);
+        GetComponent<Rigidbody2D>().isKinematic = true;
+        GetComponent<Animator>().SetTrigger("Dying");
+        speed = 0.0f;
+        yield return new WaitForSeconds(1.0f);
         Destroy(this.gameObject);
     }
 }

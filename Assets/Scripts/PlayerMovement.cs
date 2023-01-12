@@ -14,12 +14,16 @@ public class PlayerMovement : MonoBehaviour
 
     private float horizontalMove = 0.0f;
     private bool jump = false;
+    private bool crouch = false;    
     private Vector3 rX;
     private Vector3 nP;
+
+    private Animator animator;
 
 
     void Start()
     {
+        animator = GetComponent<Animator>();
         rX = new Vector3(0, 0, 0);
         origSpeed = speed;
     }
@@ -29,8 +33,11 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 playerPos = transform.position;
         horizontalMove = Input.GetAxisRaw("Horizontal") * speed;
+        float vertical = Input.GetAxisRaw("Vertical");
 
         speed = controller.isGrounded() ? origSpeed : speed * airAdjust;
+        crouch = controller.isGrounded() && (vertical == -1);
+        animator.SetBool("crouch", crouch);
 
         if (!(speed > minSpeed)) speed = minSpeed;
 
@@ -49,17 +56,26 @@ public class PlayerMovement : MonoBehaviour
         {
             controller.Dash();
         }
+
+        // animation stuff
+        float ourSpeed = Input.GetAxis("Horizontal");
+        if (crouch) ourSpeed *= 0.36f;//account for crouch speed
+        animator.SetFloat("speed", Mathf.Abs(ourSpeed));
+        animator.SetBool("grounded", controller.isGrounded());
     }
 
     public void PlayerDeath()
     {
         SoundManager.S.PlayDeathSound();
-        Destroy(this.gameObject);
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        GetComponent<Rigidbody2D>().isKinematic = true;
+        animator.SetTrigger("death");
+        Destroy(this.gameObject, 0.5f);
     }
 
-        private void FixedUpdate()
+    private void FixedUpdate()
     {
-        controller.Move(horizontalMove * Time.fixedDeltaTime, false, jump);
+        controller.Move(horizontalMove * Time.fixedDeltaTime, crouch, jump);
         jump = false;
     }
 }

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.Events;
+using System.Collections;
 
 public class CharacterController2D : MonoBehaviour
 {
@@ -16,6 +18,7 @@ public class CharacterController2D : MonoBehaviour
 	public bool m_Grounded;            // Whether or not the player is grounded.
 	const float k_CeilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
 	private Rigidbody2D m_Rigidbody2D;
+	private Animator animator;
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	private Vector3 m_Velocity = Vector3.zero;
 
@@ -35,7 +38,7 @@ public class CharacterController2D : MonoBehaviour
 	private void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
-
+		animator = GetComponent<Animator>();
 		if (OnLandEvent == null)
 			OnLandEvent = new UnityEvent();
 
@@ -138,6 +141,7 @@ public class CharacterController2D : MonoBehaviour
 			// Add a vertical force to the player.
 			m_Grounded = false;
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
+			animator.SetTrigger("fall");
 		}
 	}
 
@@ -160,7 +164,16 @@ public class CharacterController2D : MonoBehaviour
 			else m_Rigidbody2D.AddForce(new Vector2(xF * 2400f, yF * 500f + 400f));
 			m_Rigidbody2D.constraints = RigidbodyConstraints2D.None;
 			m_Rigidbody2D.freezeRotation = true;
+			animator.SetBool("dash", dash);
+			StartCoroutine(DashAnimation());
 		}
+	}
+
+	//it just works
+	public IEnumerator DashAnimation()
+	{
+		yield return new WaitForSeconds(0.05f);
+		animator.SetBool("dash", true);
 	}
 
 	//Allows for slow/fast falling 
@@ -170,13 +183,16 @@ public class CharacterController2D : MonoBehaviour
 		if (yF == 1)
         {
 			m_Rigidbody2D.gravityScale = 3;
+			animator.SetTrigger("SF");
         } else if (yF == -1)
         {
 			m_Rigidbody2D.gravityScale = 7;
+			animator.SetTrigger("FF");
 		} else
         {
 			m_Rigidbody2D.gravityScale = 5;
-        }
+			animator.SetTrigger("fall");
+		}
 	}
 
 	private void Flip()
