@@ -67,7 +67,7 @@ BoxCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0.0071102977, y: 0}
   m_SpriteTilingProperty:
@@ -94,6 +94,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c56d1d5a2693164081c418e97ed0db4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTriggerByPlayer: 0
+  animator: {fileID: 0}
 --- !u!1 &5432127444477102175
 GameObject:
   m_ObjectHideFlags: 0
