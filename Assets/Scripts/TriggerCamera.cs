@@ -11,6 +11,8 @@ public class TriggerCamera : MonoBehaviour
     public bool moveH;
     public bool moveV;
     public bool triggerBGM;
+    public bool stopBGM;
+    public bool enAnim; //enables checkpoint animation
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -18,9 +20,14 @@ public class TriggerCamera : MonoBehaviour
         {
             if(!(moveH || moveV)) CameraFollow.S.MoveCamera(newX, newY, newS);
             if (triggerBGM) SoundManager.S.PlayBGM();
+            if (stopBGM) SoundManager.S.StopAllSounds();
             CameraFollow.S.moveH = moveH;
             CameraFollow.S.moveV = moveV;
-            Destroy(this.gameObject);
+
+            this.gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            this.gameObject.GetComponent<Animator>().SetBool("RespawnEn", enAnim);
+
+            GameManager.S.UpdateRespawn(this.gameObject);
         }
     }
 }

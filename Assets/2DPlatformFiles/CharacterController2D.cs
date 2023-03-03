@@ -34,6 +34,7 @@ public class CharacterController2D : MonoBehaviour
 	private bool m_wasCrouching = false;
 
 	private bool dash = true;
+	private bool attack = true;
 
 	private void Awake()
 	{
@@ -65,6 +66,11 @@ public class CharacterController2D : MonoBehaviour
 			}
 		}
 	}
+
+	public void setDash(bool nDash)
+    {
+		dash = nDash;
+    }
 
 	public bool isGrounded()
     {
@@ -168,6 +174,24 @@ public class CharacterController2D : MonoBehaviour
 			StartCoroutine(DashAnimation());
 		}
 	}
+
+	public void Attack()
+    {
+		//honestly thought there'd be more here lol
+		animator.SetTrigger("attack");
+		if (attack) StartCoroutine(AttackSound());
+	}
+
+	public IEnumerator AttackSound()
+    {
+		attack = false;
+		bool prevG = m_Grounded;
+		bool prevD = dash;
+		yield return new WaitForSeconds(0.3f);
+		if (prevG == m_Grounded && prevD == dash) SoundManager.S.PlaySwordSound();
+		attack = true;
+
+    }
 
 	//it just works
 	public IEnumerator DashAnimation()

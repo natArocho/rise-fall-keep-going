@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 nP;
 
     private Animator animator;
+    private bool dead = false;
 
 
     void Start()
@@ -38,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
         speed = controller.isGrounded() ? origSpeed : speed * airAdjust;
         crouch = controller.isGrounded() && (vertical == -1);
         animator.SetBool("crouch", crouch);
-
+        
         if (!(speed > minSpeed)) speed = minSpeed;
 
         if (!controller.isGrounded() && rb.velocity.y < 0)
@@ -52,9 +53,14 @@ public class PlayerMovement : MonoBehaviour
             jump = true;
         }
 
-        if(Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1"))
         {
-            controller.Dash();
+            if (!dead) { controller.Dash(); }
+        }
+
+        else if (Input.GetButtonDown("Fire2"))
+        {
+            if (!dead) { controller.Attack (); }
         }
 
         // animation stuff
@@ -66,11 +72,27 @@ public class PlayerMovement : MonoBehaviour
 
     public void PlayerDeath()
     {
-        SoundManager.S.PlayDeathSound();
-        rb.constraints = RigidbodyConstraints2D.FreezeAll;
-        GetComponent<Rigidbody2D>().isKinematic = true;
-        animator.SetTrigger("death");
-        Destroy(this.gameObject, 0.5f);
+        if (!dead)
+        {
+            dead = true;
+            SoundManager.S.PlayDeathSound();
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+            GetComponent<Rigidbody2D>().isKinematic = true;
+            animator.SetTrigger("death");
+            StartCoroutine(Respawn());
+        }
+    }
+
+    public IEnumerator Respawn()
+    {
+        yield return new WaitForSeconds(0.5f);
+        animator.SetTrigger("respawn");
+        transform.position = GameManager.S.RespawnPoint.transform.position;
+        rb.constraints = RigidbodyConstraints2D.None;
+        rb.freezeRotation = true;
+        GetComponent<Rigidbody2D>().isKinematic = false;
+        dead = false;
+        Enemies.S.RespawnEnemies();
     }
 
     private void FixedUpdate()

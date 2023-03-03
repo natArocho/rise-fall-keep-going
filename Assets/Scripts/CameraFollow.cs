@@ -55,6 +55,7 @@ public class CameraFollow : MonoBehaviour
         {
             if (moveH)
             {
+                b.enabled = true;
                 cameraposition.x = Mathf.SmoothDamp(cameraposition.x, playerposition.x, ref xVelocity, 0.5f);
             }
             if (moveV)

@@ -8,6 +8,7 @@ TagManager:
   - MoveCamera
   - Enemy
   - Tile
+  - Sword
   layers:
   - Default
   - TransparentFX

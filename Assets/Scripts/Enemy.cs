@@ -7,7 +7,11 @@ public class Enemy : MonoBehaviour
     public float speed;
 
     public bool faceLeft = true;
-    private bool dead;
+    private float origSpeed;
+
+    public bool normalEnemy;
+
+    private bool dying = false;
 
     private CharacterController2D controller;
 
@@ -15,6 +19,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController2D>();
+        origSpeed = speed;
     }
 
     // Update is called once per frame
@@ -26,16 +31,19 @@ public class Enemy : MonoBehaviour
         if(faceLeft) { horizontalMove *= -1.0f; }
 
         controller.Move(horizontalMove, false, false);
+
+        if (dying)
+        {
+            dying = false;
+            StartCoroutine(WaitToDie());
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-            if (!dead) 
-            {
-                collision.gameObject.GetComponent<PlayerMovement>().PlayerDeath();
-            }
+            collision.gameObject.GetComponent<PlayerMovement>().PlayerDeath();
         }
     }
 
@@ -46,18 +54,32 @@ public class Enemy : MonoBehaviour
             faceLeft = !faceLeft;
         } else if (collision.gameObject.tag == "Player")
         {
-            StartCoroutine(WaitToDie());
+            dying = true;
         }
     }
 
     public IEnumerator WaitToDie()
     {
-        dead = true;
-        SoundManager.S.PlayEnemyDeath();
-        GetComponent<Rigidbody2D>().isKinematic = true;
-        GetComponent<Animator>().SetTrigger("Dying");
+        if (normalEnemy) SoundManager.S.PlayEnemyDeath();
+        else SoundManager.S.PlayExplodeSound();
+        //GetComponent<Rigidbody2D>().isKinematic = true;
+        if (normalEnemy) GetComponent<BoxCollider2D>().enabled = false;
+        GetComponent<CircleCollider2D>().enabled = false;
+        if (normalEnemy) GetComponent<Animator>().SetTrigger("Dying");
+        else GetComponent<Animator>().SetTrigger("Explode");
         speed = 0.0f;
         yield return new WaitForSeconds(1.0f);
-        Destroy(this.gameObject);
+        this.gameObject.SetActive(false);
+    }
+
+
+    public void SetOrigSpeed()
+    {
+        speed = origSpeed;
+    }
+
+    public void setDying(bool d)
+    {
+        dying = d;
     }
 }

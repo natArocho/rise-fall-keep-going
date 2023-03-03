@@ -113,6 +113,18 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -1376,8 +1388,8 @@ TextureImporter:
       Wasteland-Files_9: -1669421906
       Wasteland-Files_18: -1154568574
       Wasteland-Files_26: -1034859283
-      Wasteland-Files_22: 1672043909
       Wasteland-Files_13: -221497362
+      Wasteland-Files_22: 1672043909
       Wasteland-Files_40: 21727627
       Wasteland-Files_28: -986799138
       Wasteland-Files_32: 116570063

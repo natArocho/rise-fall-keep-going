@@ -13,6 +13,8 @@ public class SoundManager : MonoBehaviour
     public AudioClip enemyDeath;
     public AudioClip dashSound;
     public AudioClip coinSound;
+    public AudioClip swordSound;
+    public AudioClip explodeSound;
 
     private void Awake()
     {
@@ -52,6 +54,15 @@ public class SoundManager : MonoBehaviour
        audio.PlayOneShot(coinSound);
     }
 
+    public void PlaySwordSound()
+    {
+        audio.PlayOneShot(swordSound);
+    }
+
+    public void PlayExplodeSound()
+    {
+        audio.PlayOneShot(explodeSound);
+    }
 
     public void PlayBGM()
     {
