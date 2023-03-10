@@ -32,6 +32,14 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.S.gameState == GameState.playing)
+        {
+            PlayerUpdate();
+        }
+    }
+
+    private void PlayerUpdate()
+    {
         Vector3 playerPos = transform.position;
         horizontalMove = Input.GetAxisRaw("Horizontal") * speed;
         float vertical = Input.GetAxisRaw("Vertical");
@@ -39,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
         speed = controller.isGrounded() ? origSpeed : speed * airAdjust;
         crouch = controller.isGrounded() && (vertical == -1);
         animator.SetBool("crouch", crouch);
-        
+
         if (!(speed > minSpeed)) speed = minSpeed;
 
         if (!controller.isGrounded() && rb.velocity.y < 0)
@@ -60,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
 
         else if (Input.GetButtonDown("Fire2"))
         {
-            if (!dead) { controller.Attack (); }
+            if (!dead) { controller.Attack(); }
         }
 
         // animation stuff
@@ -76,16 +84,22 @@ public class PlayerMovement : MonoBehaviour
         {
             dead = true;
             SoundManager.S.PlayDeathSound();
+            GameManager.S.gameState = GameState.oops;
+            GameManager.S.EnableCenterText("Keep Going.");
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
             GetComponent<Rigidbody2D>().isKinematic = true;
             animator.SetTrigger("death");
+            GameManager.S.IncrDeathCnt();
             StartCoroutine(Respawn());
         }
     }
 
     public IEnumerator Respawn()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(2f);
+        GameManager.S.gameState = GameState.playing;
+        GameManager.S.DisableCenterText();
+        //this.gameObject.SetActive(true);
         animator.SetTrigger("respawn");
         transform.position = GameManager.S.RespawnPoint.transform.position;
         rb.constraints = RigidbodyConstraints2D.None;

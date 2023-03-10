@@ -35,6 +35,7 @@ public class Enemy : MonoBehaviour
         if (dying)
         {
             dying = false;
+            GameManager.S.IncrScore(200); //increase score when we kill an enemy
             StartCoroutine(WaitToDie());
         }
     }

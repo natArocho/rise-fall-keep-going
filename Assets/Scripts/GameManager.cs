@@ -1,12 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Schema;
+using TMPro;
 using UnityEngine;
+
+public enum GameState {playing, oops, lvlDone};
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager S;
 
     public GameObject RespawnPoint;
+
+    public GameObject CenterText;
+    public TextMeshProUGUI ScoreText;
+    public TextMeshProUGUI DeathText;
+    public GameObject DashUI;
+
+    public GameState gameState;
+
+    private int score = 0;
+    private int deathCount = 0;
+
+    private bool haveBlue, haveOrange, haveBlack,
+                 haveAll; //acquired all special coins
 
 
     private void Awake()
@@ -18,6 +35,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            gameState = GameState.playing;
             S = this;
         }
     }
@@ -25,13 +43,36 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        CenterText.SetActive(false);
         DontDestroyOnLoad(this);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        ScoreText.text = "Score: " + score;
+        DeathText.text = "Deaths: " + deathCount;
+        if (haveBlue && haveOrange && haveBlack) haveAll = true; //use this later
+    }
+
+    public void LevelFinished()
+    {
+        gameState = GameState.lvlDone;
+    }
+
+    public int GetScore()
+    {
+        return score;
+    }
+
+    public void IncrScore(int incr)
+    {
+        score += incr;
+    }
+
+    public void IncrDeathCnt()
+    {
+        deathCount += 1;
     }
 
     public void UpdateRespawn(GameObject newRespawn)
@@ -40,5 +81,40 @@ public class GameManager : MonoBehaviour
         GameManager.S.RespawnPoint = newRespawn;
         Animator prevAnim = prevRespawn.GetComponent<Animator>();
         prevAnim.SetBool("RespawnEn", false);
+    }
+
+    //public method to enable middle text for cutscenes/end of level
+    public void EnableCenterText(string text)
+    {
+        CenterText.SetActive(true);
+        TextMeshProUGUI txt = CenterText.GetComponent<TextMeshProUGUI>();
+        Debug.Log(text);
+        txt.text = text;
+    }
+
+    public void DisableCenterText()
+    {
+        CenterText.SetActive(false);
+    }
+
+    public void GotBlue()
+    {
+        haveBlue = true;
+    }
+
+    public void GotOrange()
+    {
+        haveOrange = true;
+    }
+
+    public void GotBlack()
+    {
+        haveBlack = true;
+    }
+
+    //For updating the Dash UI game object when we have/don't have a dash
+    public void ToggleDashUI(bool haveDash)
+    {
+        DashUI.SetActive(haveDash);
     }
 }

@@ -119,6 +119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09b9a951450dcc849a85306af9f6ac0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  specialCoin: 0
+  coinName: normal
 --- !u!61 &8565516974244545778
 BoxCollider2D:
   m_ObjectHideFlags: 0

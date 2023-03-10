@@ -65,7 +65,9 @@ public class CharacterController2D : MonoBehaviour
 					OnLandEvent.Invoke();
 			}
 		}
-	}
+
+        GameManager.S.ToggleDashUI(dash);
+    }
 
 	public void setDash(bool nDash)
     {
