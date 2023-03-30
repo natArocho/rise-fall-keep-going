@@ -8,4 +8,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Level2.unity
+    guid: 8336ea02320a37b4091e40a95cba5762
+  - enabled: 1
+    path: Assets/Scenes/Level3.unity
+    guid: 3ef5db151f74d7f4fb13b8126d1e6788
+  - enabled: 1
+    path: Assets/Scenes/UnhingedBossRant.unity
+    guid: 40470d72679124d449cb2ff46f939d80
+  - enabled: 1
+    path: Assets/Scenes/Title.unity
+    guid: 4bf894ab3d6b59441afc3607d0a4032a
   m_configObjects: {}

@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour
     private bool haveBlue, haveOrange, haveBlack,
                  haveAll; //acquired all special coins
 
+    public bool noEnemies;
+
 
     private void Awake()
     {
@@ -55,9 +57,22 @@ public class GameManager : MonoBehaviour
         if (haveBlue && haveOrange && haveBlack) haveAll = true; //use this later
     }
 
+    public void StartGame()
+    {
+        gameState = GameState.playing;
+    }
+
     public void LevelFinished()
     {
         gameState = GameState.lvlDone;
+        StartCoroutine(LoadNextLevel());
+    }
+
+    public IEnumerator LoadNextLevel()
+    {
+        SoundManager.S.StopAllSounds();
+        yield return new WaitForSeconds(2.0f);
+        LevelManager.S.LevelWin();
     }
 
     public int GetScore()

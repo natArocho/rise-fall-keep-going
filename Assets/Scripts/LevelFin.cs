@@ -24,6 +24,7 @@ public class LevelFin : MonoBehaviour
         {
             hitbox.enabled = false;
             GameManager.S.EnableCenterText("Level Complete!");
+            GameManager.S.LevelFinished();
         }
     }
 }

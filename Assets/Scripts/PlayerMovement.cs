@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
 
     public CharacterController2D controller;
-    public Rigidbody2D rb;
+    private Rigidbody2D rb;
     public float speed;
     private float origSpeed;
     public float airAdjust; //move slower in the air
@@ -24,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         rX = new Vector3(0, 0, 0);
         origSpeed = speed;
@@ -106,12 +107,19 @@ public class PlayerMovement : MonoBehaviour
         rb.freezeRotation = true;
         GetComponent<Rigidbody2D>().isKinematic = false;
         dead = false;
-        Enemies.S.RespawnEnemies();
+        if(!GameManager.S.noEnemies) Enemies.S.RespawnEnemies();
     }
 
     private void FixedUpdate()
     {
-        controller.Move(horizontalMove * Time.fixedDeltaTime, crouch, jump);
-        jump = false;
+        if (GameManager.S.gameState == GameState.playing)
+        {
+            controller.Move(horizontalMove * Time.fixedDeltaTime, crouch, jump);
+            jump = false;
+        }
+        else
+        {
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        }
     }
 }
