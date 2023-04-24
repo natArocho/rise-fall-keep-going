@@ -25,20 +25,19 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
-        S = this;
-        GameManager.S.RespawnPoint = S.RespawnPoint;
-        GameManager.S.CenterText = S.CenterText;
-        GameManager.S.ScoreText = S.ScoreText;
-        GameManager.S.DeathText = S.DeathText;
-        GameManager.S.DashUI = S.DashUI;
-        GameManager.S.StartGame();
 
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        S = this;
+        GameManager.S.RespawnPoint = RespawnPoint;
+        GameManager.S.CenterText = CenterText;
+        GameManager.S.ScoreText = ScoreText;
+        GameManager.S.DeathText = DeathText;
+        GameManager.S.DashUI = DashUI;
+        GameManager.S.StartGame();
     }
 
     public void LevelWin()
