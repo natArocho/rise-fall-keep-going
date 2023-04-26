@@ -22,7 +22,7 @@ public class Sword : MonoBehaviour
             else
             {
                 rb.velocity = Vector3.zero;
-                if (transform.position.x > collision.gameObject.transform.position.x)
+                if (transform.parent.position.x > collision.gameObject.transform.position.x)
                 {
                     rb.AddForce(new Vector2(2400, 400));
                 } 

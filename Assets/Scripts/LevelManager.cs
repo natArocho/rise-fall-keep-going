@@ -37,11 +37,15 @@ public class LevelManager : MonoBehaviour
         GameManager.S.ScoreText = ScoreText;
         GameManager.S.DeathText = DeathText;
         GameManager.S.DashUI = DashUI;
+        GameManager.S.DisableCenterText();
         GameManager.S.StartGame();
     }
 
     public void LevelWin()
     {
-        if(!finalScene) SceneManager.LoadScene(nextScene);
+        if (!finalScene)
+        {
+            SceneManager.LoadScene(nextScene);
+        }
     }
 }

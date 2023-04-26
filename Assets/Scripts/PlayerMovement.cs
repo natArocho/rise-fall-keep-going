@@ -97,12 +97,28 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator Respawn()
     {
+        bool pMV = false;
+        bool pMH = false;
+        GameObject resPoint = GameManager.S.RespawnPoint;
+        TriggerCamera moveCam = resPoint.GetComponent<TriggerCamera>();
+        if (moveCam.moveV || moveCam.moveH)
+        {
+            pMV = moveCam.moveV;
+            pMH = moveCam.moveH;
+            CameraFollow.S.MoveCamera(moveCam.newX, moveCam.newY, moveCam.newS);
+        }
         yield return new WaitForSeconds(2f);
+        if (pMV || pMH)
+        {
+            CameraFollow.S.moving = false;
+            CameraFollow.S.moveV = pMV;
+            CameraFollow.S.moveH = pMH;
+        }
         GameManager.S.gameState = GameState.playing;
         GameManager.S.DisableCenterText();
         //this.gameObject.SetActive(true);
         animator.SetTrigger("respawn");
-        transform.position = GameManager.S.RespawnPoint.transform.position;
+        transform.position = resPoint.transform.position;
         rb.constraints = RigidbodyConstraints2D.None;
         rb.freezeRotation = true;
         GetComponent<Rigidbody2D>().isKinematic = false;
