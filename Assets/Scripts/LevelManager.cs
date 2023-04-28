@@ -46,6 +46,9 @@ public class LevelManager : MonoBehaviour
         if (!finalScene)
         {
             SceneManager.LoadScene(nextScene);
+        } else
+        {
+            SceneManager.LoadScene("Title");
         }
     }
 }

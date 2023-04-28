@@ -14,13 +14,20 @@ public class TriggerCamera : MonoBehaviour
     public bool stopBGM;
     public bool enAnim; //enables checkpoint animation
 
+    public bool triggerBoss;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-            if(!(moveH || moveV)) CameraFollow.S.MoveCamera(newX, newY, newS);
+            if (triggerBoss)
+            {
+                Boss.S.triggerDia();
+            } 
+            if (!(moveH || moveV)) CameraFollow.S.MoveCamera(newX, newY, newS);
             if (triggerBGM) SoundManager.S.PlayBGM();
             if (stopBGM) SoundManager.S.StopAllSounds();
+            
             CameraFollow.S.moveH = moveH;
             CameraFollow.S.moveV = moveV;
 

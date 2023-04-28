@@ -55351,10 +55351,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2788214361251818458, guid: 6c9a25e6a2e98264b940db6234169fc3, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 5bc68aa7b8fb4ad42b9559970271fa94, type: 3}
     - target: {fileID: 2788214361251818459, guid: 6c9a25e6a2e98264b940db6234169fc3, type: 3}
       propertyPath: m_Name
       value: BGM

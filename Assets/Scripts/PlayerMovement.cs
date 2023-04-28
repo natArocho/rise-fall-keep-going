@@ -37,6 +37,20 @@ public class PlayerMovement : MonoBehaviour
         {
             PlayerUpdate();
         }
+        else if (GameManager.S.gameState == GameState.boss)
+        {
+            if (Input.GetButtonDown("Jump"))
+            {
+                DialogueManager.S.DisplayNextSentence();
+            }
+        }
+        else if (GameManager.S.gameState == GameState.gameWon)
+        {
+            if (Input.GetButtonDown("Jump"))
+            {
+                LevelManager.S.LevelWin();
+            }
+        }
     }
 
     private void PlayerUpdate()
@@ -126,6 +140,10 @@ public class PlayerMovement : MonoBehaviour
         if(!GameManager.S.noEnemies) Enemies.S.RespawnEnemies();
     }
 
+    public void stopPlayer()
+    {
+        rb.velocity = Vector3.zero; 
+    }
     private void FixedUpdate()
     {
         if (GameManager.S.gameState == GameState.playing)

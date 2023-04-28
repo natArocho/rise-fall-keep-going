@@ -60,12 +60,25 @@ public class DialogueManager : MonoBehaviour
         }
 
         string sentence = sentences.Dequeue();
-        dialogueText.text = sentence;
+        StopAllCoroutines();
+        StartCoroutine(TypeSentence(sentence));
         animator.SetBool("IsOpen", true);
+    }
+
+    IEnumerator TypeSentence(string sentence)
+    {
+        dialogueText.text = "";
+        foreach (char letter in sentence.ToCharArray())
+        {
+            dialogueText.text += letter;
+            yield return new WaitForSeconds(.05f);
+        }
     }
 
     private void EndDialogue()
     {
         animator.SetBool("IsOpen", false);
+        GameManager.S.gameState = GameState.gameWon;
+        GameManager.S.EnableCenterText("Congrats! Press Space to Return to Title");
     }
 }

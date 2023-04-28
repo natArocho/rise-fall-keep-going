@@ -4,7 +4,7 @@ using System.Xml.Schema;
 using TMPro;
 using UnityEngine;
 
-public enum GameState {playing, oops, lvlDone};
+public enum GameState {playing, oops, boss, lvlDone, gameWon};
 
 public class GameManager : MonoBehaviour
 {
