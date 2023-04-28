@@ -74,8 +74,8 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator LoadNextLevel()
     {
-        SoundManager.S.StopAllSounds();
         yield return new WaitForSeconds(2.0f);
+        SoundManager.S.StopAllSounds();
         LevelManager.S.LevelWin();
     }
 

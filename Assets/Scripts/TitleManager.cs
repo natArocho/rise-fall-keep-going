@@ -52,6 +52,10 @@ public class TitleManager : MonoBehaviour
     {
         yield return new WaitForSeconds(.5f);
         SceneManager.LoadScene(scene);
-        if (start) Destroy(this.gameObject);
+        if (start)
+        {
+            if (GameManager.S) Destroy(GameManager.S);
+            Destroy(this.gameObject);
+        }
     }
 }
